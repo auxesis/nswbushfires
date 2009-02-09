@@ -1,5 +1,7 @@
-gems/
-data/
+gems/specifications/*
+gems/gems/*
+data/*.yaml
 config.yaml
 .bzr
 .bzrignore
+
