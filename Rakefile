@@ -9,5 +9,7 @@ task 'setup' do
   deps.each do |dep|
     system("gem install #{dep} -i gems")
   end
+
+  Dir.mkdir("data") unless File.exists?("data")
 end
 
