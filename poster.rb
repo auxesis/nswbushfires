@@ -19,7 +19,7 @@ end
 
 @config = YAML::load(File.read('config.yaml'))
 
-diff_only = ARGV.grep(/--diff-only/) ? true : false
+diff_only = ARGV.grep(/--diff-only/).size > 0 ? true : false
 
 # engage!
 @yaml = Dir.glob(File.expand_path(File.join(File.dirname(__FILE__), 'data', '*.yaml'))).sort
@@ -32,9 +32,14 @@ if (first[:meta][:modified] != second[:meta][:modified]) && first[:meta][:proces
   diff.each do |i|
     next if i[:status] =~ /patrol/i
     puts "Update to #{i[:incident_name]}"
-    puts " - posting to Twitter"
     msg = "Location: #{i[:location]}, Type: #{i[:type]}, Status: #{i[:status]}, Class: #{i[:class]}, Size: #{i[:size]} Ha, Updated: #{i[:last_update].split.last}"
-    Twitter::Base.new(@config[:email], @config[:password]).update(msg) unless diff_only
+    if diff_only
+      puts " - not posting to twitter, but here's the message:"
+      puts " - \"#{msg}\""
+    else
+      puts " - posting to Twitter"
+      Twitter::Base.new(@config[:email], @config[:password]).update(msg)
+    end
   end
 
 else
