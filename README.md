@@ -7,7 +7,7 @@ Dependencies
 Setup
 =====
 
-install gem dependencies with: 
+setup data dir + install gem dependencies with: 
 
     $ rake setup
 
