@@ -1,10 +1,10 @@
-dependencies
+Dependencies
 ============
 
  * ruby
  * rake
 
-setup
+Setup
 =====
 
 install gem dependencies with: 
@@ -14,7 +14,7 @@ install gem dependencies with:
 create a `config.yaml`:
 
     --- 
-    :email: you-twitter-email@foo.com
+    :email: your-twitter-email@foo.com
     :password: moocow
 
 set up a cron job: 
@@ -23,7 +23,7 @@ set up a cron job:
 
     */15 * * * * /path/to/project/nswbushfires.sh
 
-how it works
+How it works
 ============
 
 `scraper.rb` gets latest current incidents list from RFS website, extracts some
@@ -33,3 +33,4 @@ basic data from it, and writes it out in YAML.
 Twitter. 
 
 `nswbushfires.sh` wraps both, making it suitable for running out of cron. 
+
