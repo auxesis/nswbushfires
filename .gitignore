@@ -1,5 +1,5 @@
-gems
-data
+gems/
+data/
 config.yaml
 .bzr
 .bzrignore
