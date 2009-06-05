@@ -17,7 +17,7 @@ unless File.exists?(config_filename)
   exit 1
 end
 
-@config = YAML::load(File.read('config.yaml'))
+@config = YAML::load(File.read(File.join(File.dirname(__FILE__), 'config.yaml')))
 
 diff_only = ARGV.grep(/--diff-only/).size > 0 ? true : false
 
@@ -29,8 +29,13 @@ first  = YAML::load(File.read(@yaml[-1]))
 
 if (first[:meta][:modified] != second[:meta][:modified]) && first[:meta][:processed?] != true
   diff = first[:incidents] - second[:incidents]
+  puts "No changes!" if diff.size == 0
+
   diff.each do |i|
-    next if i[:status] =~ /patrol/i
+    if i[:status] =~ /patrol/i
+      puts "Updated #{i[:incident_name]}, but status is patrol."
+      next
+    end
     puts "Update to #{i[:incident_name]}"
     msg = "Location: #{i[:location]}, Type: #{i[:type]}, Status: #{i[:status]}, Class: #{i[:class]}, Size: #{i[:size]} Ha, Updated: #{i[:last_update].split.last}"
     if diff_only
