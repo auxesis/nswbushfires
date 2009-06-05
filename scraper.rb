@@ -20,6 +20,11 @@ end
 
 page = get_page()
 
+if page =~ /There are no open incidents at this time./
+  puts "No open incidents - exiting!"
+  exit
+end
+
 doc = Nokogiri::HTML(page)
 incidents = doc.search('table').first
 
