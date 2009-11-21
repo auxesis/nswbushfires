@@ -3,13 +3,9 @@ require 'rake'
 
 task 'default' => ['spec']
 
-desc 'install gems'
+desc 'install gems and setup environment'
 task 'setup' do
-  deps = ["twitter", "nokogiri"]
-  deps.each do |dep|
-    system("gem install #{dep} -i gems")
-  end
-
+  system("gem bundle")
   Dir.mkdir("data") unless File.exists?("data")
 end
 
