@@ -31,7 +31,7 @@ class FetcherOptions
     end
 
     # output in current directory
-    options.output_directory ||= File.join(Dir.pwd, 'data')
+    options.output_directory ||= File.join(File.dirname(__FILE__), 'data')
 
     options
   end
