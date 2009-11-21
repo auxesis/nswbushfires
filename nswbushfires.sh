@@ -1,4 +1,6 @@
-#!/bin/sh -e 
+#!/bin/sh 
+
+set -e 
 
 basedir=$(dirname $0)
 
