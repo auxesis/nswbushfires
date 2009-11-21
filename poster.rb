@@ -55,15 +55,6 @@ class Poster
     @config_filename = opts[:config_filename]
   end
 
-  # entry point - you should only ever have to call this
-  def post
-    load_data
-    if unprocessed? && changed?
-      post_updates
-      mark_as_processed
-    end
-  end
-
   def load_data
     @config = YAML::load(File.read(@config_filename))
     @yamls = Dir.glob(File.expand_path(File.join(@data_directory, '*.yaml'))).sort
@@ -145,6 +136,15 @@ class Poster
     @last[:meta][:processed?] = true
     File.open(@yamls[-1], 'w') do |f|
       f << @last.to_yaml 
+    end
+  end
+
+  # entry point - you should only ever have to call this
+  def post
+    load_data
+    if unprocessed? && changed?
+      post_updates
+      mark_as_processed
     end
   end
 
