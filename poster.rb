@@ -1,11 +1,7 @@
 #!/usr/bin/env ruby
 #
 
-require 'rubygems'
-
-Gem.path.clear
-Gem.path << File.expand_path(File.join(File.dirname(__FILE__), 'gems'))
-
+require File.join(File.dirname(__FILE__), "vendor", "gems", "environment")
 require 'yaml'
 require 'twitter'
 
