@@ -60,7 +60,7 @@ class Poster
     @yamls = Dir.glob(File.expand_path(File.join(@data_directory, '*.yaml'))).sort
     
     unless @yamls[-1] && @yamls[-2]
-      puts "Please run the scraper again - need another dataset to compare against."
+      puts "Please run the fetcher again - need another dataset to compare against."
       exit 1
     end
     
