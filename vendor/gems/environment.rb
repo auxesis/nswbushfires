@@ -3,7 +3,7 @@ module Bundler
  file = File.expand_path(__FILE__)
  dir = File.dirname(file)
 
-  ENV["PATH"]     = "#{dir}/../../bin:#{ENV["PATH"]}"
+  ENV["PATH"]     = "#{dir}/bin:#{ENV["PATH"]}"
   ENV["RUBYOPT"]  = "-r#{file} #{ENV["RUBYOPT"]}"
 
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/httparty-0.4.5/bin")
@@ -16,6 +16,8 @@ module Bundler
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/crack-0.1.4/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/ruby-hmac-0.3.2/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/ruby-hmac-0.3.2/lib")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/json_pure-1.2.0/bin")
+  $LOAD_PATH.unshift File.expand_path("#{dir}/gems/json_pure-1.2.0/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/twitter-0.7.5/bin")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/twitter-0.7.5/lib")
   $LOAD_PATH.unshift File.expand_path("#{dir}/gems/nokogiri-1.4.0/bin")
@@ -37,6 +39,8 @@ module Bundler
   @bundled_specs["ruby-hmac"].loaded_from = "#{dir}/specifications/ruby-hmac-0.3.2.gemspec"
   @bundled_specs["crack"] = eval(File.read("#{dir}/specifications/crack-0.1.4.gemspec"))
   @bundled_specs["crack"].loaded_from = "#{dir}/specifications/crack-0.1.4.gemspec"
+  @bundled_specs["json_pure"] = eval(File.read("#{dir}/specifications/json_pure-1.2.0.gemspec"))
+  @bundled_specs["json_pure"].loaded_from = "#{dir}/specifications/json_pure-1.2.0.gemspec"
   @bundled_specs["nokogiri"] = eval(File.read("#{dir}/specifications/nokogiri-1.4.0.gemspec"))
   @bundled_specs["nokogiri"].loaded_from = "#{dir}/specifications/nokogiri-1.4.0.gemspec"
   @bundled_specs["twitter"] = eval(File.read("#{dir}/specifications/twitter-0.7.5.gemspec"))
