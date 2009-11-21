@@ -4,8 +4,8 @@ set -e
 
 basedir=$(dirname $0)
 
-echo "running scraper"
-ruby $basedir/scraper.rb
+echo "running fetcher"
+ruby $basedir/fetcher.rb
 
 echo "running poster"
 ruby $basedir/poster.rb

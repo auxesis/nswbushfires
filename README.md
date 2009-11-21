@@ -26,7 +26,7 @@ set up a cron job:
 How it works
 ============
 
-`scraper.rb` gets latest current incidents list from RFS GeoRSS feed, extracts
+`fetcher.rb` gets latest current incidents list from RFS GeoRSS feed, extracts
 data from it, and writes it out in YAML. 
 
 `poster.rb` compares the last two YAML files, and posts the differences to 
