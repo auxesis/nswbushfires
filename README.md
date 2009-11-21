@@ -26,11 +26,12 @@ set up a cron job:
 How it works
 ============
 
-`scraper.rb` gets latest current incidents list from RFS website, extracts some
-basic data from it, and writes it out in YAML. 
+`scraper.rb` gets latest current incidents list from RFS GeoRSS feed, extracts
+data from it, and writes it out in YAML. 
 
 `poster.rb` compares the last two YAML files, and posts the differences to 
-Twitter. 
+Twitter. Also builds a shortened GMaps url for viewing incident location, and
+embeds lat/lng data in Twitter update. 
 
 `nswbushfires.sh` wraps both, making it suitable for running out of cron. 
 
