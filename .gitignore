@@ -1,5 +1,6 @@
-gems/specifications/*
-gems/gems/*
+vendor/gems/specifications/*
+vendor/gems/gems/*
+vendor/gems/bin/*
 data/*.yaml
 config.yaml
 .bzr
