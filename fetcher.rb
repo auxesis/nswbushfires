@@ -91,14 +91,14 @@ class RFSCurrentIncidentsFetcher < Fetcher
 
       incident_data = {}
       incident_data[:incident_name] = incident.children.css('title').first.text
-      incident_data[:council_name]  = description_parts.find {|d| d =~ /^COUNCIL AREA/i}.split(/:\s*/).last
-      incident_data[:location]      = description_parts.find {|d| d =~ /^LOCATION/i}.split(/:\s*/).last
-      incident_data[:type]          = description_parts.find {|d| d =~ /^TYPE/i}.split(/:\s*/).last
-      incident_data[:size]          = description_parts.find {|d| d =~ /^SIZE/i}.split(/:\s*/).last
-      incident_data[:status]        = description_parts.find {|d| d =~ /^STATUS/i}.split(/:\s*/).last
-      incident_data[:last_update]   = description_parts.find {|d| d =~ /^UPDATED/i}.split(/:\s*/).last
-      incident_data[:agency]        = description_parts.find {|d| d =~ /^RESPONSIBLE AGENCY/i}.split(/:\s*/).last
-      incident_data[:alert_level]   = description_parts.find {|d| d =~ /^ALERT LEVEL/i}.split(/:\s*/).last
+      incident_data[:council_name]  = find_part(description_parts, /^COUNCIL AREA/i)
+      incident_data[:location]      = find_part(description_parts, /^LOCATION/i)
+      incident_data[:type]          = find_part(description_parts, /^TYPE/i)
+      incident_data[:size]          = find_part(description_parts, /^SIZE/i)
+      incident_data[:status]        = find_part(description_parts, /^STATUS/i)
+      incident_data[:last_update]   = find_part(description_parts, /^UPDATED/i)
+      incident_data[:agency]        = find_part(description_parts, /^RESPONSIBLE AGENCY/i)
+      incident_data[:alert_level]   = find_part(description_parts, /^ALERT LEVEL/i)
       incident_data[:lat]           = geo.split.first
       incident_data[:long]          = geo.split.last
     
@@ -106,6 +106,12 @@ class RFSCurrentIncidentsFetcher < Fetcher
     end
 
     @data[:meta][:modified] = doc.xpath("//pubDate").first.text
+  end
+
+  private
+  def find_part(parts, regex)
+    part = parts.find {|d| d =~ regex}
+    part ? part.split(/:\s*/).last : nil
   end
 
 end
