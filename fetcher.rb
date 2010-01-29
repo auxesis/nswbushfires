@@ -87,7 +87,8 @@ class RFSCurrentIncidentsFetcher < Fetcher
 
       raw_description = incident.children.css("description").first
       description_parts = raw_description.text.split('<br />')
-      geo = incident.children.find {|child| child.name == "point"}.text
+      raw_geo = incident.children.find {|child| child.name == "point"}
+      geo = raw_geo.blank? ? "" : raw_geo.text
 
       incident_data = {}
       incident_data[:incident_name] = incident.children.css('title').first.text
