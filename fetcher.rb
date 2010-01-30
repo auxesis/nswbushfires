@@ -86,6 +86,7 @@ class RFSCurrentIncidentsFetcher < Fetcher
     incidents.each do |incident|
 
       raw_description = incident.children.css("description").first
+      next unless raw_description
       description_parts = raw_description.text.split('<br />')
       raw_geo = incident.children.find {|child| child.name == "point"}
       geo = raw_geo ? raw_geo.text : ""
