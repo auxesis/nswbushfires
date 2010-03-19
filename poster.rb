@@ -123,7 +123,11 @@ class Poster
 
   def build_message(i)
     msg = []
-    msg << "Location: #{i[:location]}"
+    if i[:incident_name] =~ /unmapped/i
+      msg << "Council: #{i[:council_name]}"
+    else
+      msg << "Location: #{i[:location]}"
+    end
     msg << "Type: #{i[:type]}" 
     msg << "Status: #{i[:status]}"
     msg << "Size: #{i[:size]}"
