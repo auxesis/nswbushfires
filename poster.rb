@@ -135,7 +135,7 @@ class Poster
     message = msg.join(', ')
 
     if message.size > 140
-      (msg - msg[3]).join(', ')
+      (msg - [msg[3]]).join(', ')
     else
       message
     end
