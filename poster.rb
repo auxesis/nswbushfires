@@ -25,7 +25,7 @@ class PosterOptions
       end
     end
 
-    begin 
+    begin
       opts.parse!(args)
     rescue => e
       puts e.message.capitalize + "\n\n"
@@ -58,12 +58,12 @@ class Poster
   def load_data
     @config = YAML::load(File.read(@config_filename))
     @yamls = Dir.glob(File.expand_path(File.join(@data_directory, '*.yaml'))).sort
-    
+
     unless @yamls[-1] && @yamls[-2]
       puts "Please run the fetcher again - need another dataset to compare against."
       exit 1
     end
-    
+
     @second_last = YAML::load(File.read(@yamls[-2]))
     @last        = YAML::load(File.read(@yamls[-1]))
   end
@@ -75,7 +75,7 @@ class Poster
   def changed?
     @diff = @last[:incidents] - @second_last[:incidents]
     updated = @diff.size == 0
-    modified = @last[:meta][:modified] != @second_last[:meta][:modified] 
+    modified = @last[:meta][:modified] != @second_last[:meta][:modified]
 
     updated || modified
   end
@@ -111,7 +111,7 @@ class Poster
 
       response = open(bitly_api_url).read
       json = JSON.parse(response)
-      
+
       if json["errorCode"] == 0 && json["statusCode"] == "OK"
         url = json["results"].keys.first
         json["results"][url]["shortUrl"]
@@ -128,18 +128,25 @@ class Poster
     else
       msg << "Location: #{i[:location]}"
     end
-    msg << "Type: #{i[:type]}" 
+    msg << "Type: #{i[:type]}"
     msg << "Status: #{i[:status]}"
     msg << "Size: #{i[:size]}"
     msg << "Map: #{i[:gmaps]}" if i[:gmaps]
-    msg.join(', ')
+    message = msg.join(', ')
+
+    if message.size > 140
+      (msg - msg[3]).join(', ')
+    else
+      message
+    end
+    #message = (msg - msg[3]).join(', ') if message.size > 140
   end
 
   def mark_as_processed
-    return if @diff_only 
+    return if @diff_only
     @last[:meta][:processed?] = true
     File.open(@yamls[-1], 'w') do |f|
-      f << @last.to_yaml 
+      f << @last.to_yaml
     end
   end
 
@@ -162,6 +169,6 @@ poster = Poster.new(:data_directory => options.directory,
 poster.post
 
 
-exit 
+exit
 
 
