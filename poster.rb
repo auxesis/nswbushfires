@@ -96,7 +96,13 @@ class Poster
         puts " - posting to Twitter"
         auth = Twitter::HTTPAuth.new(@config[:email], @config[:password])
         client = Twitter::Base.new(auth)
-        client.update(msg, :lat => i[:lat], :long => i[:long])
+        begin
+          client.update(msg, :lat => i[:lat], :long => i[:long])
+        rescue Twitter::Unavailable, Twitter::InformTwitter => e
+          puts "Problem with Twitter: #{e.message}"
+        rescue Twitter::General => e
+          puts "Problem with tweet: #{e.message}"
+        end
       end
     end
   end
