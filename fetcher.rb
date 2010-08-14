@@ -1,4 +1,4 @@
-#!/usr/bin/env ruby 
+#!/usr/bin/env ruby
 #
 
 # deps
@@ -22,7 +22,7 @@ class FetcherOptions
       end
     end
 
-    begin 
+    begin
       opts.parse!(args)
     rescue => e
       puts e.message.capitalize + "\n\n"
@@ -42,12 +42,18 @@ class Fetcher
     @data = []
     @filename = File.expand_path(File.join(opts[:output_directory], 'data.json'))
   end
- 
+
   def fetch
-    @raw = open(@uri).read
+    begin
+      @raw = open(@uri).read
+    rescue Errno::ETIMEDOUT
+      puts "Timeout when fetching data from NSW RFS website."
+      puts "Exiting!"
+      exit 1
+    end
   end
 
-  def build 
+  def build
     raise "you need to subclass this to use it!"
   end
 
@@ -70,12 +76,12 @@ class RFSCurrentIncidentsFetcher < Fetcher
     super
     @filename = File.expand_path(File.join(opts[:output_directory], Time.now.strftime('%Y-%m-%dT%H:%M:%S%z.yaml')))
     @uri = "http://www.rfs.nsw.gov.au/feeds/majorIncidents.xml"
-    
+
     # data structure for storing incidents
     @data = {}
     @data[:incidents] = []
     @data[:meta] = {}
-    
+
     @output_type = "yaml"
   end
 
@@ -103,7 +109,7 @@ class RFSCurrentIncidentsFetcher < Fetcher
       incident_data[:alert_level]   = find_part(description_parts, /^ALERT LEVEL/i)
       incident_data[:lat]           = geo.split.first
       incident_data[:long]          = geo.split.last
-    
+
       @data[:incidents] << incident_data
     end
 
