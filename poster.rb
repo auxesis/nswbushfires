@@ -98,6 +98,8 @@ class Poster
         client = Twitter::Base.new(auth)
         begin
           client.update(msg, :lat => i[:lat], :long => i[:long])
+        rescue SocketError
+          puts "Problem with networking: #{e.message}"
         rescue Twitter::Unavailable, Twitter::InformTwitter => e
           puts "Problem with Twitter: #{e.message}"
         rescue Twitter::General => e
