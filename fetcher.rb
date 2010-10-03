@@ -1,10 +1,8 @@
 #!/usr/bin/env ruby
 #
 
-# deps
-require File.join(File.dirname(__FILE__), 'vendor', 'gems', 'environment')
-
-
+require "rubygems"
+require "bundler/setup"
 require 'open-uri'
 require 'nokogiri'
 require 'json'

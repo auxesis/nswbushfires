@@ -1,0 +1,24 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    crack (0.1.8)
+    hashie (0.4.0)
+    httparty (0.6.1)
+      crack (= 0.1.8)
+    json_pure (1.4.6)
+    multi_json (0.0.4)
+    nokogiri (1.4.3.1)
+    oauth (0.4.3)
+    twitter (0.9.12)
+      hashie (~> 0.4.0)
+      httparty (~> 0.6.1)
+      multi_json (~> 0.0.4)
+      oauth (~> 0.4.3)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  json_pure
+  nokogiri
+  twitter
