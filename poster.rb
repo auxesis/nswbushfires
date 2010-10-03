@@ -13,7 +13,7 @@ class PosterOptions
   def self.parse(args)
     options = OpenStruct.new
     opts = OptionParser.new do |opts|
-      opts.banner = "Usage: fetcher <options>"
+      opts.banner = "Usage: poster <options>"
       opts.on('-o', '--diff-only', "compare, but don't post") do
         options.diff_only = true
       end
