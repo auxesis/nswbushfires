@@ -180,9 +180,25 @@ class Poster
     end
   end
 
+  def validate_config
+    %w(consumer_token consumer_secret access_token access_secret).each do |attr|
+      attr = attr.to_sym
+
+      @missing ||= []
+      @missing << attr unless @config[attr]
+    end
+
+    if @missing.size > 0
+      pretty_missing = @missing.map {|m| ":#{m}" }.join(', ')
+      puts "You need to specify #{pretty_missing} in #{@config_filename}"
+      exit 2
+    end
+  end
+
   # entry point - you should only ever have to call this
   def post
     load_data
+    validate_config
     if unprocessed? && changed?
       authenticate
       post_updates
