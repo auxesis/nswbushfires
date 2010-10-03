@@ -3,6 +3,6 @@
 source :rubygems
 
 gem "twitter"
-gem "nokogiri"
+gem "nokogiri", "1.4.0"
 gem "json_pure"
 

@@ -7,7 +7,7 @@ GEM
       crack (= 0.1.8)
     json_pure (1.4.6)
     multi_json (0.0.4)
-    nokogiri (1.4.3.1)
+    nokogiri (1.4.0)
     oauth (0.4.3)
     twitter (0.9.12)
       hashie (~> 0.4.0)
@@ -20,5 +20,5 @@ PLATFORMS
 
 DEPENDENCIES
   json_pure
-  nokogiri
+  nokogiri (= 1.4.0)
   twitter
