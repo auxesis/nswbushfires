@@ -1,7 +1,8 @@
 #!/usr/bin/env ruby
 #
 
-require File.join(File.dirname(__FILE__), "vendor", "gems", "environment")
+require 'rubygems'
+require 'bundler/setup'
 require 'yaml'
 require 'twitter'
 require 'ostruct'
@@ -80,24 +81,45 @@ class Poster
     updated || modified
   end
 
+  def authenticate
+    consumer_token  = @config[:consumer_token]
+    consumer_secret = @config[:consumer_secret]
+    access_token    = @config[:access_token]
+    access_secret   = @config[:access_secret]
+
+    @oauth          = Twitter::OAuth.new(consumer_token, consumer_secret)
+
+    begin
+      @oauth.authorize_from_access(access_token, access_secret)
+    rescue OAuth::Unauthorized => e
+      puts "Couldn't authenticate:"
+      p e
+      puts "Exiting."
+      exit
+    end
+
+    @twitter = Twitter::Base.new(@oauth)
+  end
+
   def post_updates
     @diff.each do |i|
       if i[:status] =~ /patrol/i
         puts "Updated #{i[:incident_name]}, but status is patrol."
         next
       end
+
       i[:gmaps] = shorten_gmaps_url(:lat => i[:lat], :long => i[:long])
       puts "Update to #{i[:incident_name]}"
       msg = build_message(i)
+
       if @diff_only
         puts " - not posting to twitter, but here's the message:"
         puts " - \"#{msg}\""
       else
         puts " - posting to Twitter"
-        auth = Twitter::HTTPAuth.new(@config[:email], @config[:password])
-        client = Twitter::Base.new(auth)
+
         begin
-          client.update(msg, :lat => i[:lat], :long => i[:long])
+          @twitter.update(msg, :lat => i[:lat], :long => i[:long])
         rescue SocketError
           puts "Problem with networking: #{e.message}"
         rescue Twitter::Unavailable, Twitter::InformTwitter => e
@@ -162,11 +184,11 @@ class Poster
   def post
     load_data
     if unprocessed? && changed?
+      authenticate
       post_updates
       mark_as_processed
     end
   end
-
 
 end
 
