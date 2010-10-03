@@ -1,11 +1,12 @@
 #!/usr/bin/env ruby
 #
 
-require "rubygems"
-require "bundler/setup"
+require 'rubygems'
+require 'bundler/setup'
 require 'open-uri'
 require 'nokogiri'
 require 'json'
+require 'yaml'
 require 'ostruct'
 require 'optparse'
 require 'uri'
