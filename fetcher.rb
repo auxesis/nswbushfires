@@ -45,11 +45,8 @@ class Fetcher
   def fetch
     begin
       @raw = open(@uri).read
-    rescue OpenURI::HTTPError => e
+    rescue Errno::ETIMEDOUT, OpenURI::HTTPError, Timeout::Error => e
       puts e.message
-      puts "Exiting!"
-    rescue Errno::ETIMEDOUT
-      puts "Timeout when fetching data from NSW RFS website."
       puts "Exiting!"
       exit 1
     end
