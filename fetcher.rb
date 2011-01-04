@@ -45,7 +45,7 @@ class Fetcher
   def fetch
     begin
       @raw = open(@uri).read
-    rescue Errno::ETIMEDOUT, OpenURI::HTTPError, Timeout::Error => e
+    rescue Errno::ETIMEDOUT, OpenURI::HTTPError, Timeout::Error, Errno::ECONNRESET => e
       puts e.message
       puts "Exiting!"
       exit 1
