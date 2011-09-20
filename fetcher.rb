@@ -118,7 +118,7 @@ class RFSCurrentIncidentsFetcher < Fetcher
   private
   def find_part(parts, regex)
     part = parts.find {|d| d =~ regex}
-    part ? part.split(/:\s*/).last.strip : nil
+    part ? part.split(/[A-Z]:\s*/).last.strip : nil
   end
 
 end
