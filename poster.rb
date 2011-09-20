@@ -88,10 +88,11 @@ class Poster
     last        = @last[:incidents].map        {|i| i.reject {|k,v| !attr_whitelist.include?(k) } }
     second_last = @second_last[:incidents].map {|i| i.reject {|k,v| !attr_whitelist.include?(k) } }
 
-    @diff = last - second_last
+    # Get the list of new incidents. Remove MVAs.
+    @diff = (last - second_last).reject {|i| i[:type] =~ /motor\s*vehicle\s*accident/i }
 
     if @verbose
-      puts "\nAttributes that are different:"
+      puts "\nAttributes that are different:" if @diff.size > 0
       @diff.each do |incident|
         old_incident = second_last.find {|i| i[:incident_name] == incident[:incident_name] }
         if old_incident
@@ -100,12 +101,14 @@ class Poster
           p incident.reject {|k, v| v == old_incident[k]}
           print "After:     "
           p old_incident.reject {|k, v| v == incident[k]}
+        else
+          puts incident[:incident_name]
+          puts "**New incident**"
         end
+        puts
       end
+      puts
     end
-
-
-    exit
 
     updated = @diff.size == 0
     modified = @last[:meta][:modified] != @second_last[:meta][:modified]
@@ -145,7 +148,7 @@ class Poster
       msg = build_message(i)
 
       if @diff_only
-        puts " - not posting to twitter, but here's the message:"
+        puts " - This would be posted to Twitter:"
         puts " - \"#{msg}\""
       else
         puts " - posting to Twitter"
@@ -160,6 +163,7 @@ class Poster
           puts "Problem with tweet: #{e.message}"
         end
       end
+      puts
     end
   end
 
