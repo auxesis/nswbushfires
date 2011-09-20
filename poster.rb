@@ -89,7 +89,7 @@ class Poster
     second_last = @second_last[:incidents].map {|i| i.reject {|k,v| !attr_whitelist.include?(k) } }
 
     # Get the list of new incidents. Remove MVAs.
-    @diff = (last - second_last).reject {|i| i[:type] =~ /motor\s*vehicle\s*accident/i }
+    @diff = (last - second_last).reject {|i| i[:type] =~ /vehicle/i }
 
     if @verbose
       puts "\nAttributes that are different:" if @diff.size > 0
