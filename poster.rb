@@ -24,6 +24,9 @@ class PosterOptions
       opts.on('-c', '--config FILE', 'config filename') do |file|
         options.config_filename = file
       end
+      opts.on('-v', '--verbose', 'increase verbosity') do
+        options.verbose  = true
+      end
     end
 
     begin
@@ -51,9 +54,10 @@ end
 
 class Poster
   def initialize(opts={})
-    @diff_only = opts[:diff_only]
-    @data_directory = opts[:data_directory]
+    @diff_only       = opts[:diff_only]
+    @data_directory  = opts[:data_directory]
     @config_filename = opts[:config_filename]
+    @verbose         = opts[:verbose]
   end
 
   def load_data
@@ -74,7 +78,35 @@ class Poster
   end
 
   def changed?
-    @diff = @last[:incidents] - @second_last[:incidents]
+    if @verbose
+      puts "Second Latest: #{@yamls[-2]}"
+      puts "Latest:        #{@yamls[-1]}"
+    end
+
+    # Filter out attrs that change frequently.
+    attr_whitelist = [:type, :status, :size, :council_name, :location, :incident_name]
+    last        = @last[:incidents].map        {|i| i.reject {|k,v| !attr_whitelist.include?(k) } }
+    second_last = @second_last[:incidents].map {|i| i.reject {|k,v| !attr_whitelist.include?(k) } }
+
+    @diff = last - second_last
+
+    if @verbose
+      puts "\nAttributes that are different:"
+      @diff.each do |incident|
+        old_incident = second_last.find {|i| i[:incident_name] == incident[:incident_name] }
+        if old_incident
+          puts incident[:incident_name]
+          print "Before:    "
+          p incident.reject {|k, v| v == old_incident[k]}
+          print "After:     "
+          p old_incident.reject {|k, v| v == incident[k]}
+        end
+      end
+    end
+
+
+    exit
+
     updated = @diff.size == 0
     modified = @last[:meta][:modified] != @second_last[:meta][:modified]
 
@@ -209,9 +241,10 @@ class Poster
 end
 
 options = PosterOptions.parse(ARGV)
-poster = Poster.new(:data_directory => options.directory,
+poster = Poster.new(:data_directory  => options.directory,
                     :config_filename => options.config_filename,
-                    :diff_only => options.diff_only)
+                    :verbose         => options.verbose,
+                    :diff_only       => options.diff_only)
 poster.post
 
 
