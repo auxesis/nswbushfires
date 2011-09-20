@@ -84,7 +84,7 @@ class Poster
     end
 
     # Filter out attrs that change frequently.
-    attr_whitelist = [:type, :status, :size, :council_name, :location, :incident_name]
+    attr_whitelist = [:type, :status, :size, :council_name, :location, :incident_name, :lat, :long]
     last        = @last[:incidents].map        {|i| i.reject {|k,v| !attr_whitelist.include?(k) } }
     second_last = @second_last[:incidents].map {|i| i.reject {|k,v| !attr_whitelist.include?(k) } }
 
