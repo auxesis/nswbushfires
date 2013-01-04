@@ -1,12 +1,12 @@
-#!/bin/sh 
+#!/bin/sh
 
-set -e 
+set -e
 
 basedir=$(dirname $0)
 
 echo "running fetcher"
-ruby $basedir/fetcher.rb
+ruby -W0 $basedir/fetcher.rb
 
 echo "running poster"
-ruby $basedir/poster.rb
+ruby -W0 $basedir/poster.rb
 
