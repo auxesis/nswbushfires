@@ -45,3 +45,14 @@ embeds lat/lng data in Twitter update.
 
 `nswbushfires.sh` wraps both, making it suitable for running out of cron.
 
+
+Operational improvements
+========================
+
+Standalone server
+PagerDuty notifications
+ - if no notification has been sent in the last 24 hours
+ - if there are Twitter failures (posting, authentication)
+Logging
+Web interface to review updates
+`cap deploy` workflow
