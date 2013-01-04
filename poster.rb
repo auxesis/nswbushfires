@@ -117,23 +117,14 @@ class Poster
   end
 
   def authenticate
-    consumer_token  = @config[:consumer_token]
-    consumer_secret = @config[:consumer_secret]
-    access_token    = @config[:access_token]
-    access_secret   = @config[:access_secret]
+    credentials = {
+      :consumer_key       => @config[:consumer_token],
+      :consumer_secret    => @config[:consumer_secret],
+      :oauth_token        => @config[:access_token],
+      :oauth_token_secret => @config[:access_secret],
+    }
 
-    @oauth          = Twitter::OAuth.new(consumer_token, consumer_secret)
-
-    begin
-      @oauth.authorize_from_access(access_token, access_secret)
-    rescue OAuth::Unauthorized => e
-      puts "Couldn't authenticate:"
-      p e
-      puts "Exiting."
-      exit
-    end
-
-    @twitter = Twitter::Base.new(@oauth)
+    @twitter = Twitter::Client.new(credentials)
   end
 
   def post_updates
@@ -157,10 +148,8 @@ class Poster
           @twitter.update(msg, :lat => i[:lat], :long => i[:long])
         rescue SocketError
           puts "Problem with networking: #{e.message}"
-        rescue Twitter::Unavailable, Twitter::InformTwitter => e
-          puts "Problem with Twitter: #{e.message}"
-        rescue Twitter::General => e
-          puts "Problem with tweet: #{e.message}"
+        rescue Twitter::Error => e
+          puts "Problem with Twitter: #{e.class}: #{e.message}"
         end
       end
       puts
