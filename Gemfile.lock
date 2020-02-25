@@ -4,9 +4,11 @@ GEM
     faraday (0.8.4)
       multipart-post (~> 1.1)
     json_pure (1.4.6)
+    mini_portile2 (2.4.0)
     multi_json (1.5.0)
     multipart-post (1.1.5)
-    nokogiri (1.4.0)
+    nokogiri (1.10.8)
+      mini_portile2 (~> 2.4.0)
     simple_oauth (0.2.0)
     twitter (4.4.2)
       faraday (~> 0.8)
@@ -18,5 +20,5 @@ PLATFORMS
 
 DEPENDENCIES
   json_pure
-  nokogiri (= 1.4.0)
+  nokogiri (= 1.10.8)
   twitter (= 4.4.2)
